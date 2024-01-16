@@ -17,18 +17,47 @@ class UploadEbook extends Component
     public $ebook; // 定义电子书变量
     public $kindle_email = null; // 初始化 kindle 邮箱
 
+
+
     // 检查用户是否已经登录的函数
     public function checkAuthentication()
     {
         if (auth()->guest()) {
-            throw new \Exception('You must be logged in to upload files.');
+
+            throw new \Exception(
+                'You must be logged in to upload files.'
+            );
         }
     }
 
     // 验证用户的输入
     public function validateInput($inputParams)
     {
-        $this->validate($inputParams);
+        $rules = [ // 验证电子书
+
+            'kindle_email' => [
+                'required', 'email',
+                function ($attribute, $value, $fail) {
+                    if (strpos($value, '@kindle.') === false) {
+                        $fail('Error kindle email address.');
+                    }
+                }
+            ],
+            'ebook' => 'required|file|mimes:epub,zip,pdf,bin,text,html|max:51200', // max size 50MB
+        ];
+
+        $inputParams = is_array($inputParams)
+            ? $inputParams
+            : [$inputParams];
+
+        $validateRules = [];
+        foreach ($inputParams as $field) {
+            if (array_key_exists($field, $rules)) {
+                $validateRules[$field] = $rules[$field];
+            }
+        }
+
+        $this->validate($validateRules);
     }
 
     public function __construct()
@@ -52,16 +81,7 @@ class UploadEbook extends Component
     {
         try {
             $this->checkAuthentication(); // 检查用户是否登录
-            $this->validateInput([ // 验证 kindle 邮箱
-                'kindle_email' => [
-                    'required', 'email',
-                    function ($attribute, $value, $fail) {
-                        if (strpos($value, '@kindle.') === false) {
-                            $fail('Error send to kindle email address.');
-                        }
-                    }
-                ],
-            ]);
+            $this->validateInput('kindle_email');
         } catch (\Exception $e) {
             session()->flash('error',  $e->getMessage()); // 若存在错误，设置错误信息
         }
@@ -71,12 +91,11 @@ class UploadEbook extends Component
     {
         try {
             $this->checkAuthentication(); // 检查用户是否登录
-            $this->validateInput([ // 验证电子书
-                'ebook' => 'required|file|mimes:epub,zip,pdf,bin,txt|max:51200', // max size 50MB
-            ]);
+
+            $this->validateInput('ebook');
         } catch (UnableToRetrieveMetadata | \Exception $e) {
             $this->reset('ebook'); // 若存在错误，重置电子书
-            $message = $e instanceof UnableToRetrieveMetadata ? 'File name too long, please rename it and upload again.' : $e->getMessage();
+            $message = $e instanceof UnableToRetrieveMetadata ? 'File name too long, please rename it shorter and upload again.' : $e->getMessage();
             session()->flash('error',  $message); // 设置错误信息
         }
     }
@@ -102,17 +121,7 @@ class UploadEbook extends Component
     {
         try {
             $this->checkAuthentication();  // 检查用户是否登录
-            $this->validateInput([ // 验证电子书和邮箱
-                'ebook' => 'required|file|mimes:epub,zip,pdf,bin,txt|max:51200', // max size 50MB
-                'kindle_email' => [
-                    'required', 'email',
-                    function ($attribute, $value, $fail) {
-                        if (strpos($value, '@kindle.') === false) {
-                            $fail('Error send to kindle email address.');
-                        }
-                    }
-                ],
-            ]);
+            $this->validateInput(['kindle_email', 'ebook']);
 
             // 加载电子书
             $file = $this->ebook;
@@ -125,7 +134,7 @@ class UploadEbook extends Component
             // 构造文件路径
             $filePath =  date('Y/m/') . $newFileName;
             // 将文件存储于 ebooks 目录
-            $file->storeAs('ebooks', $filePath,'local');
+            $file->storeAs('ebooks', $filePath, 'local');
             $this->reset('ebook'); // 重置电子书
 
             $this->createEbook($file, $originalFileName, $filePath); // 创建并存储电子书至数据库

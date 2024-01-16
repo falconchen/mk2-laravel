@@ -62,9 +62,10 @@ class UploadEbook extends Component
             if (auth()->guest()) {
                 throw new \Exception('You must be logged in to upload files.');
             }
+            echo $this->ebook->getMimeType();exit;
 
             $this->validate([
-                'ebook' => 'required|file|mimes:epub,zip,pdf,bin,txt|max:51200', // max size 50MB
+                'ebook' => 'required|file|mimes:epub,zip,pdf,bin,txt,html|max:51200', // max size 50MB
             ]);
 
         } catch (UnableToRetrieveMetadata | \Exception $e) {
