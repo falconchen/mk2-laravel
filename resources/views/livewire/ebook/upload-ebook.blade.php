@@ -3,7 +3,7 @@
 
     <form class="space-y-8 md:w-1/2 px-4 py-8 bg-white rounded  mt-8 mx-auto" wire:submit.prevent="submit">
 
-        <h1 class="text-center font-bold text-lg">Upload eBook</h1>
+        <h1 class="text-center font-bold text-lg">Upload Your Ebook</h1>
 
         @if (session()->has('message'))
         <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4" role="alert">

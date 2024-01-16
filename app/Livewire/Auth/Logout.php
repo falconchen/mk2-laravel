@@ -20,7 +20,7 @@ class Logout extends Component
     {
         return <<<'HTML'
 
-        <a wire:click="logout"  class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-blue-800 hover:text-white">
+        <a wire:click="logout"  class="inline-block px-4 py-2 leading-none  rounded text-white border-white hover:border-blue-800 hover:text-white">
                     Logout
                 </a>
         HTML;

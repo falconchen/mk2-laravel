@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <div class="max-w-screen-xl mx-auto">
+    <div class="max-w-screen-xl mx-auto ">
       <!-- 顶部导航 -->
       <nav class="bg-white shadow-md">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
