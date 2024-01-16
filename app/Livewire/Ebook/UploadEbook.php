@@ -36,8 +36,9 @@ class UploadEbook extends Component
         if (auth()->check()) {
             // 如果用户已登录，获取最新的电子书
             $latestEbook = auth()->user()->ebooks()->latest('uploaded_time')->first();
+
             // 设置当前的 kindle 电子邮件地址
-            $this->kindle_email = $latestEbook->kindle_email;
+            $this->kindle_email =  $latestEbook->kindle_email ?? null;
         }
     }
 
