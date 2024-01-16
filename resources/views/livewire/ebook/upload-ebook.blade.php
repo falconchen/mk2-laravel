@@ -1,7 +1,7 @@
 <div class="">
 
 
-    <form class="space-y-8 md:w-1/2 px-4 py-8 bg-white rounded shadow-md mt-8 mx-auto" wire:submit.prevent="submit">
+    <form class="space-y-8 md:w-1/2 px-4 py-8 bg-white rounded  mt-8 mx-auto" wire:submit.prevent="submit">
 
         <h1 class="text-center font-bold text-lg">Upload eBook</h1>
 
