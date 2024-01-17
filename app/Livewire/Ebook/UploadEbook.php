@@ -100,6 +100,10 @@ class UploadEbook extends Component
         }
     }
 
+    public function resetEbook(){
+        $this->reset('ebook');    
+    }
+
     // 创建电子书并存储至数据库
     public function createEbook($file, $originalFileName, $filePath)
     {

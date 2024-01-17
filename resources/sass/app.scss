@@ -55,9 +55,12 @@ select:invalid {
 [x-cloak] {
     display: none;
 }
-.abc {
-    color: #cdd;
+progress[value]::-webkit-progress-bar {
+    background-color: #eee; /* 这是背景色 */
 }
-h2 {
-    color: #f00 !important;
+progress[value]::-webkit-progress-value {
+    background-color: rgb(37, 99, 235); /* 这是进度条的颜色 */
+}
+progress[value]::-moz-progress-bar {
+    background-color:rgb(37, 99, 235); /* 这是进度条的颜色 */
 }

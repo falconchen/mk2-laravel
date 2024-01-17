@@ -1,7 +1,14 @@
 <div class="">
 
 
-    <form class="space-y-8 md:w-1/2 px-4 py-8 bg-white rounded  mt-8 mx-auto" wire:submit.prevent="submit">
+    <form class="space-y-8 md:w-1/2 px-4 py-8 bg-white rounded  mt-8 mx-auto" wire:submit.prevent="submit"
+        x-data="{ uploading: false, progress: 0 ,fail: false}"
+        x-on:livewire-upload-start="uploading = true"
+        x-on:livewire-upload-finish="uploading = false"
+        x-on:livewire-upload-error="uploading = false; fail = true"
+        x-on:livewire-upload-progress="progress = $event.detail.progress"        
+    
+    >
 
         <h1 class="text-center font-bold text-lg">Upload Your Ebook</h1>
 
@@ -34,15 +41,26 @@
             </div>
 
         </div>
+        
+
+
+
 
 
         <div class="bg-gray-50 p-4 border-2 border-dashed border-gray-300 rounded-md space-y-2">
+        
             <div class="w-full h-24 flex items-center justify-center cursor-pointer {{ isset($ebook) ? 'border-none' : 'border-2 border-dashed' }}"
-                @click.native="$refs.fileInput.click()">
+                @if ( $ebook ) wire:click="resetEbook" @endif
+                @click.native="$refs.fileInput.click();progress=0"
+            >
+
+                
+                
                 <input type="file" hidden wire:model="ebook" x-ref="fileInput" accept=".epub,.pdf,.txt" />
                 <div class="flex flex-col text-center ">
 
                     @if (isset($ebook))
+
                         <strong>
                             {{ $ebook->getClientOriginalName() }}
                          </strong>
@@ -54,16 +72,33 @@
                         $fileExtension = $this->file->getClientOriginalExtension(); --}}
                         <p>{{ formatSizeUnits( $ebook->getSize()) }}</p>
                     @else
+                        <div x-show="!uploading">
                         Click here to select a file
+                        <div x-show="fail">upload failed</div>
+                        </div>
+                        <div x-show="uploading" style="display:none">
+                            <div x-text="`${progress}%`"></div>
+                            <progress max="100"  x-bind:value="progress" x-show.transition.opacity="uploading"></progress>                            
+                        </div>
+                        
+                        
                     @endif
 
 
                 </div>
             </div>
         </div>
-        <button class="w-full py-2 px-3 bg-blue-600 hover:bg-blue-700 text-white text-center rounded-md" type="submit">
+            
+
+        <button   
+        class="w-full py-2 px-3 bg-blue-600 hover:bg-blue-700 text-white text-center rounded-md " 
+        x-bind:disabled="uploading" x-bind:class="{' pointer-events-none opacity-50 cursor-not-allowed': uploading }"
+        type="submit">
+        
             Submit
         </button>
+        
     </form>
 </div>
+
 
