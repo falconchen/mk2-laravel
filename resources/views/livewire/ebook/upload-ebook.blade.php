@@ -6,11 +6,11 @@
         x-on:livewire-upload-start="uploading = true"
         x-on:livewire-upload-finish="uploading = false"
         x-on:livewire-upload-error="uploading = false; fail = true"
-        x-on:livewire-upload-progress="progress = $event.detail.progress"        
-    
+        x-on:livewire-upload-progress="progress = $event.detail.progress"
+
     >
 
-        <h1 class="text-center font-bold text-lg">Upload Your Ebook</h1>
+        <h1 class="text-center font-bold text-2xl">Upload Your Ebook</h1>
 
         @if (session()->has('message'))
         <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4" role="alert">
@@ -41,21 +41,21 @@
             </div>
 
         </div>
-        
+
 
 
 
 
 
         <div class="bg-gray-50 p-4 border-2 border-dashed border-gray-300 rounded-md space-y-2">
-        
+
             <div class="w-full h-24 flex items-center justify-center cursor-pointer {{ isset($ebook) ? 'border-none' : 'border-2 border-dashed' }}"
                 @if ( $ebook ) wire:click="resetEbook" @endif
                 @click.native="$refs.fileInput.click();progress=0"
             >
 
-                
-                
+
+
                 <input type="file" hidden wire:model="ebook" x-ref="fileInput" accept=".epub,.pdf,.txt" />
                 <div class="flex flex-col text-center ">
 
@@ -78,26 +78,26 @@
                         </div>
                         <div x-show="uploading" style="display:none">
                             <div x-text="`${progress}%`"></div>
-                            <progress max="100"  x-bind:value="progress" x-show.transition.opacity="uploading"></progress>                            
+                            <progress max="100"  x-bind:value="progress" x-show.transition.opacity="uploading"></progress>
                         </div>
-                        
-                        
+
+
                     @endif
 
 
                 </div>
             </div>
         </div>
-            
 
-        <button   
-        class="w-full py-2 px-3 bg-blue-600 hover:bg-blue-700 text-white text-center rounded-md " 
+
+        <button
+        class="w-full py-2 px-3 bg-blue-600 hover:bg-blue-700 text-white text-center rounded-md "
         x-bind:disabled="uploading" x-bind:class="{' pointer-events-none opacity-50 cursor-not-allowed': uploading }"
         type="submit">
-        
+
             Submit
         </button>
-        
+
     </form>
 </div>
 
