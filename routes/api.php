@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,4 +17,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::post('/mailgun', function(Request  $request){    
+    $data = var_export($request->all(), true);
+    $filename = "mailgun-" . now()->format('Ymd-His') . ".log";
+    Storage::put($filename, $data);
 });
