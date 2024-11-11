@@ -16,9 +16,13 @@ return [
 
     'mailgun' => [
         'domain' => env('MAILGUN_DOMAIN'),
+        'username'=>env('MAILGUN_USERNAME'),
         'secret' => env('MAILGUN_SECRET'),
         'endpoint' => env('MAILGUN_ENDPOINT', 'api.mailgun.net'),
         'scheme' => 'https',
+        'm2k_user_id'=>env('MAILGUN_M2K_USER_ID'),
+        'm2k_kindle_email'=>env('MAILGUN_M2K_KINDLE_EMAIL'),
+        
     ],
 
     'postmark' => [
